@@ -1,2 +1,3 @@
 minicli
 pendulum
+pre-commit

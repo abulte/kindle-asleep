@@ -13,9 +13,7 @@ DEFAULT_PATH = "data/Kindle.Devices.ReadingSession/Kindle.Devices.ReadingSession
 
 @cli
 def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
-    results = defaultdict(
-        lambda: datetime.utcfromtimestamp(0).replace(tzinfo=tz.utc)
-    )
+    results = defaultdict(lambda: datetime.utcfromtimestamp(0).replace(tzinfo=tz.utc))
     orphans = {}
 
     print(datetime.utcfromtimestamp(0))
@@ -64,11 +62,14 @@ def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
     output_path.mkdir(exist_ok=True)
     output_file = output_path / f"{datetime.today().date().isoformat()}.csv"
     with Path(output_file).open("w") as f:
-        writer = csv.DictWriter(f, fieldnames=["day", "asleep_datetime"])
+        writer = csv.DictWriter(f, fieldnames=["day", "asleep_datetime", "asleep_datetime_utc"])
         writer.writeheader()
-        writer.writerows([
-            {"day": k, "asleep_datetime": to_local_dt(v)} for k, v in results.items()
-        ])
+        writer.writerows(
+            [
+                {"day": k, "asleep_datetime": to_local_dt(v), "asleep_datetime_utc": v}
+                for k, v in results.items()
+            ]
+        )
     print(f"Results written to {output_file}, with timezone {timezone}")
 
 

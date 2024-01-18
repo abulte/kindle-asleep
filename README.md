@@ -1,10 +1,14 @@
 # kindle-asleep
 
+## Context
+
 I use my Kindle (or the Kindle app) every day to put me through sleep.
 
 This means that Kindle data should give me a very precise way of knowing the time when I fell asleep. I have various sleep trackers (Withings sleep, Garmin watch) that are not good at this job, they count my reading as sleeping time.
 
 Amazon does not, to my knowledge, provide any API or similar tool to access those informations easily. _But_ you can [request of very complete export of your Kindle data](https://jakelee.co.uk/analysing-5-years-of-amazon-kindle-reading/), wait a few hours/days for Amazon to ship them to you (via email, not drone) and crunch the numbers.
+
+## Script
 
 Hence this script. It takes the export as input and tries to find the latest end of reading session for a given day, or early in the next day.
 
@@ -26,3 +30,7 @@ Output should look something like this:
 2024-01-16	2024-01-16 21:41:46+00:00
 Results written to output/2024-01-18.csv, with timezone Europe/Paris
 ```
+
+## Analysis
+
+`notebooks/analysis.ipynb` contains code that will output a PDF with a monthly bar chart of your bed time for each day. It takes the output of the previous script as input.

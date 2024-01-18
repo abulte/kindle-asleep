@@ -1,3 +1,4 @@
 data/
 output/
 notebooks/*.pdf
+notebooks/.ipynb_checkpoints/

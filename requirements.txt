@@ -1,3 +1,4 @@
 minicli
 pendulum
 pre-commit
+jupyter

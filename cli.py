@@ -16,7 +16,12 @@ def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
     results = defaultdict(lambda: datetime.utcfromtimestamp(0).replace(tzinfo=tz.utc))
     orphans = {}
 
-    print(datetime.utcfromtimestamp(0))
+    # TODO:
+    # - compute total reading time
+    #   - take min(start_timestamp) if start_timestamp.hour > 6
+    #   - make 6 a variable (used also for next day search)
+    # - refactor by grouping by date first
+    # - do timezone conversion before comparing hour > 6 or < 6
 
     # BOM in input CSV...
     with path.open(encoding="utf-8-sig") as f:
@@ -40,13 +45,13 @@ def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
 
     results = dict(sorted(results.items()))
 
-    for today, sleep_time in results.items():
+    for today in results:
         tomorrow = today + timedelta(days=1)
         # look for a suitable orphan, same day
         if today in orphans and orphans[today] > results[today]:
             results[today] = orphans[today]
-        # or an early enough orphan for the next day
-        elif (
+        # and/or an early enough orphan for the next day
+        if (
             tomorrow in orphans
             and orphans[tomorrow] > results[today]
             and orphans[tomorrow].hour < 6

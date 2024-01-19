@@ -18,13 +18,6 @@ def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
     results = defaultdict(lambda: {"start": None, "end": None})
     orphans = {}
 
-    # TODO:
-    # - compute total reading time
-    #   - take min(start_timestamp) if start_timestamp.hour > 6
-    #   - make 6 a variable (used also for next day search)
-    # - refactor by grouping by date first
-    # - do timezone conversion before comparing hour > 6 or < 6
-
     # BOM in input CSV...
     with path.open(encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
@@ -88,6 +81,8 @@ def compute(path: Path = Path(DEFAULT_PATH), timezone="Europe/Paris"):
             tomorrow in orphans
             and orphans[tomorrow] > results[today]["end"]
             and local_dt_tomorrow.hour < MAX_END_HOUR
+            # avoid jumping to after tomorrow with tz conversion
+            and local_dt_tomorrow.day == orphans[tomorrow].day
         ):
             print(f"Gotcha, tomorrow orphan {orphans[tomorrow]} as of {today}")
             results[today]["end"] = orphans[tomorrow]

@@ -31,6 +31,15 @@ Output should look something like this:
 Results written to output/2024-01-18.csv, with timezone Europe/Paris
 ```
 
+The following columns are exported:
+
+- `day`
+- `start_local`
+- `start_utc`
+- `end_local`
+- `end_utc`
+- `reading_time_seconds`
+
 ## Analysis
 
 `notebooks/analysis.ipynb` contains code that will output a PDF with a monthly bar chart of your bed time for each day. It takes the output of the previous script as input.
